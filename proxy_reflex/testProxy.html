@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="initial-scale=1.0">
+    <title>test Proxy
+
+    </title>
+</head>
+
+<body>
+
+
+    <script>
+
+        const obj = {
+            a: 1,
+            list: [
+                { name: '张三', age: 11 },
+                { name: '张三', age: 11 }
+            ],
+            lenght: 2,
+            column: {
+                name: '姓名',
+                age: "年龄"
+
+            },
+            fn() {
+                alert(1)
+            }
+        }
+        let validator = {
+            set: function (obj, prop, value) {
+                console.log(arguments);
+                if (prop === 'age') {
+                    if (!Number.isInteger(value)) {
+                        throw new TypeError('The age is not an integer');
+                    }
+                    if (value > 200) {
+                        throw new RangeError('The age seems invalid');
+                    }
+                }
+
+                // The default behavior to store the value
+                obj[prop] = value;
+            },
+            apply: function (...arg) {
+                console.log("apply--->", arg);
+            }
+        };
+
+        let p = new Proxy(obj.fn, validator);
+        console.log(p);
+
+        p.age = 100;
+        p(1, 2, 3)
+        console.log(obj);
+
+    </script>
+
+</body>
+
+</html>
